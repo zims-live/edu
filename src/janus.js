@@ -23,6 +23,7 @@
  */
 
 // List of sessions
+import adapter from 'webrtc-adapter';
 Janus.sessions = {};
 
 Janus.isExtensionEnabled = function() {
@@ -157,42 +158,42 @@ Janus.useDefaultDependencies = function (deps) {
 	}
 };
 
-Janus.useOldDependencies = function (deps) {
-	var jq = (deps && deps.jQuery) || jQuery;
-	var socketCls = (deps && deps.WebSocket) || WebSocket;
-	return {
-		newWebSocket: function(server, proto) { return new socketCls(server, proto); },
-		isArray: function(arr) { return jq.isArray(arr); },
-		extension: (deps && deps.extension) || defaultExtension,
-		webRTCAdapter: (deps && deps.adapter) || adapter,
-		httpAPICall: function(url, options) {
-			var payload = options.body !== undefined ? {
-				contentType: 'application/json',
-				data: JSON.stringify(options.body)
-			} : {};
-			var credentials = options.withCredentials !== undefined ? {xhrFields: {withCredentials: options.withCredentials}} : {};
+//Janus.useOldDependencies = function (deps) {
+	//var jq = (deps && deps.jQuery) || jQuery;
+	//var socketCls = (deps && deps.WebSocket) || WebSocket;
+	//return {
+		//newWebSocket: function(server, proto) { return new socketCls(server, proto); },
+		//isArray: function(arr) { return jq.isArray(arr); },
+		//extension: (deps && deps.extension) || defaultExtension,
+		//webRTCAdapter: (deps && deps.adapter) || adapter,
+		//httpAPICall: function(url, options) {
+			//var payload = options.body !== undefined ? {
+				//contentType: 'application/json',
+				//data: JSON.stringify(options.body)
+			//} : {};
+			//var credentials = options.withCredentials !== undefined ? {xhrFields: {withCredentials: options.withCredentials}} : {};
 
-			return jq.ajax(jq.extend(payload, credentials, {
-				url: url,
-				type: options.verb,
-				cache: false,
-				dataType: 'json',
-				async: options.async,
-				timeout: options.timeout,
-				success: function(result) {
-					if(typeof(options.success) === typeof(Janus.noop)) {
-						options.success(result);
-					}
-				},
-				error: function(xhr, status, err) {
-					if(typeof(options.error) === typeof(Janus.noop)) {
-						options.error(status, err);
-					}
-				}
-			}));
-		}
-	};
-};
+			//return jq.ajax(jq.extend(payload, credentials, {
+				//url: url,
+				//type: options.verb,
+				//cache: false,
+				//dataType: 'json',
+				//async: options.async,
+				//timeout: options.timeout,
+				//success: function(result) {
+					//if(typeof(options.success) === typeof(Janus.noop)) {
+						//options.success(result);
+					//}
+				//},
+				//error: function(xhr, status, err) {
+					//if(typeof(options.error) === typeof(Janus.noop)) {
+						//options.error(status, err);
+					//}
+				//}
+			//}));
+		//}
+	//};
+//};
 
 Janus.noop = function() {};
 
@@ -392,10 +393,10 @@ Janus.init = function(options) {
 				Janus.webRTCAdapter.browserDetails.version < 72) {
 			// Chrome does, but it's only usable from version 72 on
 			Janus.unifiedPlan = false;
-		} else if(!window.RTCRtpTransceiver || !('currentDirection' in RTCRtpTransceiver.prototype)) {
+		//} else if(!window.RTCRtpTransceiver || !('currentDirection' in RTCRtpTransceiver.prototype)) {
 			// Safari supports addTransceiver() but not Unified Plan when
 			// currentDirection is not defined (see codepen above).
-			Janus.unifiedPlan = false;
+			//Janus.unifiedPlan = false;
 		} else {
 			// Check if addTransceiver() throws an exception
 			var tempPc = new RTCPeerConnection();
@@ -3533,3 +3534,5 @@ function Janus(gatewayCallbacks) {
 		return (trickle === false) ? false : true;
 	}
 }
+
+export default Janus
