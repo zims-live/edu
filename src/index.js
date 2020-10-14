@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Icon, IconButton, Toolbar, AppBar } from '@material-ui/core';
 import Janus from './janus.js';
 
 let server = "/janusbase/janus"
-let myid = null
+//let myid = null
 let opaqueId = "videoroomtest-"+Janus.randomString(12);
 let janus;
 let sfutest = null;
 let started = false;
 let myusername = Math.floor((Math.random() * 1000));
 let roomId = 1234;
-let mystream = null;
+//let mystream = null;
 
-let feeds = []
+//let feeds = []
 
 var bitrateTimer = [];
 
@@ -74,13 +74,13 @@ class BottomNavbar extends React.Component {
     //createRoom() {
         //alert('room has been created');
     //}
+                        //<IconButton color='inherit' onClick={this.createRoom}><Icon>create</Icon></IconButton>
 
     render() {
         return (
             <div>
                 <AppBar position='static' id='bottom-app-bar'>
                     <Toolbar>
-                        <IconButton color='inherit' onClick={this.createRoom}><Icon>create</Icon></IconButton>
                         <ToggleButton toggleOn={this.props.toggleAudioMute} toggleOff={this.props.toggleAudioMute} color='inherit' toggledIcon='mic_off' regularIcon='mic' />
                         <ToggleButton toggleOn={this.props.toggleVideoMute} toggleOff={this.props.toggleVideoMute} color='inherit' toggledIcon='videocam_off' regularIcon='videocam' />
                         <ToggleButton toggleOn={this.toggleScreenShareOn} toggleOff={this.toggleScreenShareOff} color='inherit' toggledIcon='screen_share' regularIcon='stop_screen_share' />
@@ -228,7 +228,7 @@ class VideoSection extends React.Component {
                                 var event = msg["videoroom"];
                                 if(event != undefined && event != null) {
                                     if(event === "joined") {
-                                        myid = msg["id"];
+                                        //myid = msg["id"];
                                         this.publishOwnFeed(true);
                                         this.setState({visible: false});
                                         if (msg["publishers"] !== undefined && msg["publishers"] !== null) {
@@ -304,7 +304,7 @@ class VideoSection extends React.Component {
                             onremotestream: (stream) => {
                             },
                             oncleanup: () => {
-                                mystream = null;
+                                //mystream = null;
                             }
                         });
                 },
