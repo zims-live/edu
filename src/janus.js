@@ -65,9 +65,9 @@ var defaultExtension = {
 		this.cache = cache;
 		// Wait for events from the Chrome Extension
 		window.addEventListener('message', function (event) {
-			if(event.origin != window.location.origin)
+			if(event.origin !== window.location.origin)
 				return;
-			if(event.data.type == 'janusGotScreen' && cache[event.data.id]) {
+			if(event.data.type === 'janusGotScreen' && cache[event.data.id]) {
 				var callback = cache[event.data.id];
 				delete cache[event.data.id];
 
@@ -79,7 +79,7 @@ var defaultExtension = {
 				} else {
 					callback(null, event.data.sourceId);
 				}
-			} else if (event.data.type == 'janusGetScreenPending') {
+			} else if (event.data.type === 'janusGetScreenPending') {
 				console.log('clearing ', event.data.id);
 				window.clearTimeout(event.data.id);
 			}
@@ -227,9 +227,6 @@ Janus.init = function(options) {
 		// Already initialized
 		options.callback();
 	} else {
-		if(typeof console == "undefined" || typeof console.log == "undefined") {
-			console = { log: function() {} };
-		}
 		// Console logging (all debugging disabled by default)
 		Janus.trace = Janus.noop;
 		Janus.debug = Janus.noop;
@@ -605,9 +602,9 @@ function Janus(gatewayCallbacks) {
 			// Just an ack, we can probably ignore
 			Janus.debug("Got an ack on session " + sessionId);
 			Janus.debug(json);
-			var transaction = json["transaction"];
+			let transaction = json["transaction"];
 			if(transaction) {
-				var reportSuccess = transactions[transaction];
+				let reportSuccess = transactions[transaction];
 				if(reportSuccess)
 					reportSuccess(json);
 				delete transactions[transaction];
@@ -617,9 +614,9 @@ function Janus(gatewayCallbacks) {
 			// Success!
 			Janus.debug("Got a success on session " + sessionId);
 			Janus.debug(json);
-			var transaction = json["transaction"];
+			let transaction = json["transaction"];
 			if(transaction) {
-				var reportSuccess = transactions[transaction];
+				let reportSuccess = transactions[transaction];
 				if(reportSuccess)
 					reportSuccess(json);
 				delete transactions[transaction];
@@ -627,7 +624,7 @@ function Janus(gatewayCallbacks) {
 			return;
 		} else if(json["janus"] === "trickle") {
 			// We got a trickle candidate from Janus
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
@@ -663,12 +660,12 @@ function Janus(gatewayCallbacks) {
 			// The PeerConnection with the server is up! Notify this
 			Janus.debug("Got a webrtcup event on session " + sessionId);
 			Janus.debug(json);
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
 			}
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				Janus.debug("This handle is not attached to this session");
 				return;
@@ -679,12 +676,12 @@ function Janus(gatewayCallbacks) {
 			// A plugin asked the core to hangup a PeerConnection on one of our handles
 			Janus.debug("Got a hangup event on session " + sessionId);
 			Janus.debug(json);
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
 			}
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				Janus.debug("This handle is not attached to this session");
 				return;
@@ -695,12 +692,12 @@ function Janus(gatewayCallbacks) {
 			// A plugin asked the core to detach one of our handles
 			Janus.debug("Got a detached event on session " + sessionId);
 			Janus.debug(json);
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
 			}
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				// Don't warn here because destroyHandle causes this situation.
 				return;
@@ -712,12 +709,12 @@ function Janus(gatewayCallbacks) {
 			// Media started/stopped flowing
 			Janus.debug("Got a media event on session " + sessionId);
 			Janus.debug(json);
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
 			}
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				Janus.debug("This handle is not attached to this session");
 				return;
@@ -727,12 +724,12 @@ function Janus(gatewayCallbacks) {
 			Janus.debug("Got a slowlink event on session " + sessionId);
 			Janus.debug(json);
 			// Trouble uplink or downlink
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
 			}
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				Janus.debug("This handle is not attached to this session");
 				return;
@@ -742,9 +739,9 @@ function Janus(gatewayCallbacks) {
 			// Oops, something wrong happened
 			Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);	// FIXME
 			Janus.debug(json);
-			var transaction = json["transaction"];
+			let transaction = json["transaction"];
 			if(transaction) {
-				var reportSuccess = transactions[transaction];
+				let reportSuccess = transactions[transaction];
 				if(reportSuccess) {
 					reportSuccess(json);
 				}
@@ -754,7 +751,7 @@ function Janus(gatewayCallbacks) {
 		} else if(json["janus"] === "event") {
 			Janus.debug("Got a plugin event on session " + sessionId);
 			Janus.debug(json);
-			var sender = json["sender"];
+			let sender = json["sender"];
 			if(!sender) {
 				Janus.warn("Missing sender...");
 				return;
@@ -767,7 +764,7 @@ function Janus(gatewayCallbacks) {
 			Janus.debug("  -- Event is coming from " + sender + " (" + plugindata["plugin"] + ")");
 			var data = plugindata["data"];
 			Janus.debug(data);
-			var pluginHandle = pluginHandles[sender];
+			let pluginHandle = pluginHandles[sender];
 			if(!pluginHandle) {
 				Janus.warn("This handle is not attached to this session");
 				return;
@@ -1026,7 +1023,7 @@ function Janus(gatewayCallbacks) {
 
 			var onUnbindMessage = function(event){
 				var data = JSON.parse(event.data);
-				if(data.session_id == request.session_id && data.transaction == request.transaction) {
+				if(data.session_id === request.session_id && data.transaction === request.transaction) {
 					unbindWebSocket();
 					callbacks.success();
 					if(notifyDestroyed)
@@ -1544,7 +1541,7 @@ function Janus(gatewayCallbacks) {
 		if(!config.dtmfSender) {
 			// Create the DTMF sender the proper way, if possible
 			if(config.pc) {
-				var senders = config.pc.getSenders();
+				let senders = config.pc.getSenders();
 				var audioSender = senders.find(function(sender) {
 					return sender.track && sender.track.kind === 'audio';
 				});
@@ -1677,7 +1674,7 @@ function Janus(gatewayCallbacks) {
 					// Use Transceivers
 					Janus.log((media.replaceAudio ? "Replacing" : "Adding") + " audio track:", stream.getAudioTracks()[0]);
 					var audioTransceiver = null;
-					var transceivers = config.pc.getTransceivers();
+					let transceivers = config.pc.getTransceivers();
 					if(transceivers && transceivers.length > 0) {
 						for(var t of transceivers) {
 							if((t.sender && t.sender.track && t.sender.track.kind === "audio") ||
@@ -1703,10 +1700,10 @@ function Janus(gatewayCallbacks) {
 				if(Janus.unifiedPlan) {
 					// Use Transceivers
 					Janus.log((media.replaceVideo ? "Replacing" : "Adding") + " video track:", stream.getVideoTracks()[0]);
-					var videoTransceiver = null;
-					var transceivers = config.pc.getTransceivers();
+					let videoTransceiver = null;
+					let transceivers = config.pc.getTransceivers();
 					if(transceivers && transceivers.length > 0) {
-						for(var t of transceivers) {
+						for(let t of transceivers) {
 							if((t.sender && t.sender.track && t.sender.track.kind === "video") ||
 									(t.receiver && t.receiver.track && t.receiver.track.kind === "video")) {
 								videoTransceiver = t;
@@ -2195,51 +2192,43 @@ function Janus(gatewayCallbacks) {
 				var simulcast2 = (callbacks.simulcast2 === true);
 				if((simulcast || simulcast2) && !jsep && !media.video)
 					media.video = "hires";
-				if(media.video && media.video != 'screen' && media.video != 'window') {
+				if(media.video && media.video !== 'screen' && media.video !== 'window') {
 					if(typeof media.video === 'object') {
 						videoSupport = media.video;
 					} else {
 						var width = 0;
-						var height = 0, maxHeight = 0;
+						var height = 0;
 						if(media.video === 'lowres') {
 							// Small resolution, 4:3
 							height = 240;
-							maxHeight = 240;
 							width = 320;
 						} else if(media.video === 'lowres-16:9') {
 							// Small resolution, 16:9
 							height = 180;
-							maxHeight = 180;
 							width = 320;
 						} else if(media.video === 'hires' || media.video === 'hires-16:9' || media.video === 'hdres') {
 							// High(HD) resolution is only 16:9
 							height = 720;
-							maxHeight = 720;
 							width = 1280;
 						} else if(media.video === 'fhdres') {
 							// Full HD resolution is only 16:9
 							height = 1080;
-							maxHeight = 1080;
 							width = 1920;
 						} else if(media.video === '4kres') {
 							// 4K resolution is only 16:9
 							height = 2160;
-							maxHeight = 2160;
 							width = 3840;
 						} else if(media.video === 'stdres') {
 							// Normal resolution, 4:3
 							height = 480;
-							maxHeight = 480;
 							width = 640;
 						} else if(media.video === 'stdres-16:9') {
 							// Normal resolution, 16:9
 							height = 360;
-							maxHeight = 360;
 							width = 640;
 						} else {
 							Janus.log("Default video setting is stdres 4:3");
 							height = 480;
-							maxHeight = 480;
 							width = 640;
 						}
 						Janus.log("Adding media constraint:", media.video);
@@ -2377,7 +2366,7 @@ function Janus(gatewayCallbacks) {
 									var polly = window.setInterval(function () {
 										if(!stream)
 											window.clearInterval(polly);
-										if(stream.currentTime == lastTime) {
+										if(stream.currentTime === lastTime) {
 											window.clearInterval(polly);
 											if(stream.onended) {
 												stream.onended();
@@ -2532,7 +2521,7 @@ function Janus(gatewayCallbacks) {
 		if(Janus.unifiedPlan) {
 			// We can use Transceivers
 			var audioTransceiver = null, videoTransceiver = null;
-			var transceivers = config.pc.getTransceivers();
+			let transceivers = config.pc.getTransceivers();
 			if(transceivers && transceivers.length > 0) {
 				for(var t of transceivers) {
 					if((t.sender && t.sender.track && t.sender.track.kind === "audio") ||
@@ -3119,7 +3108,7 @@ function Janus(gatewayCallbacks) {
 										res.type === "inbound-rtp" && res.id.indexOf("rtcp") < 0) {
 									// New stats
 									inStats = true;
-								} else if(res.type == 'ssrc' && res.bytesReceived &&
+								} else if(res.type === 'ssrc' && res.bytesReceived &&
 										(res.googCodecName === "VP8" || res.googCodecName === "")) {
 									// Older Chromer versions
 									inStats = true;
@@ -3301,7 +3290,7 @@ function Janus(gatewayCallbacks) {
 					continue;
 				}
 			}
-			if(lines[i].length == 0) {
+			if(lines[i].length === 0) {
 				lines.splice(i, 1); i--;
 				continue;
 			}
@@ -3310,10 +3299,10 @@ function Janus(gatewayCallbacks) {
 			// Couldn't find a FID attribute, let's just take the first video SSRC we find
 			insertAt = -1;
 			video = false;
-			for(var i=0; i<lines.length; i++) {
-				var mline = lines[i].match(/m=(\w+) */);
+			for(let i=0; i<lines.length; i++) {
+				let mline = lines[i].match(/m=(\w+) */);
 				if(mline) {
-					var medium = mline[1];
+					let medium = mline[1];
 					if(medium === "video") {
 						// New video m-line: make sure it's the first one
 						if(ssrc[0] < 0) {
@@ -3343,7 +3332,7 @@ function Janus(gatewayCallbacks) {
 						continue;
 					}
 				} else {
-					var match = lines[i].match('a=ssrc:' + ssrc[0] + ' cname:(.+)')
+					let match = lines[i].match('a=ssrc:' + ssrc[0] + ' cname:(.+)')
 					if(match) {
 						cname = match[1];
 					}
@@ -3390,7 +3379,7 @@ function Janus(gatewayCallbacks) {
 		ssrc_fid[1] = Math.floor(Math.random()*0xFFFFFFFF);
 		ssrc_fid[2] = Math.floor(Math.random()*0xFFFFFFFF);
 		// Add attributes to the SDP
-		for(var i=0; i<ssrc.length; i++) {
+		for(let i=0; i<ssrc.length; i++) {
 			if(cname) {
 				lines.splice(insertAt, 0, 'a=ssrc:' + ssrc[i] + ' cname:' + cname);
 				insertAt++;

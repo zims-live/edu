@@ -40,12 +40,12 @@ function TopNavbar() {
 }
 
 class BottomNavbar extends React.Component {
-    constructor(props) {
-        super(props);
+    //constructor(props) {
+        //super(props);
         //this.state = {
             //isMute: false
         //};
-    }
+    //}
 
     //toggleMuteOn() {
         //this.props.toggleAudioMute();
@@ -226,31 +226,30 @@ class VideoSection extends React.Component {
                             onmessage: (msg, jsep) => {
                                 // console.log(msg)
                                 var event = msg["videoroom"];
-                                if(event != undefined && event != null) {
+                                if(event !== undefined && event != null) {
                                     if(event === "joined") {
                                         //myid = msg["id"];
                                         this.publishOwnFeed(true);
                                         this.setState({visible: false});
                                         if (msg["publishers"] !== undefined && msg["publishers"] !== null) {
-                                            var list = msg["publishers"];
-                                            for(var f in list) {
-                                                var id = list[f]["id"];
-                                                var display = list[f]["display"];
+                                            let list = msg["publishers"];
+                                            for(let f in list) {
+                                                let id = list[f]["id"];
+                                                let display = list[f]["display"];
                                                 this.newRemoteFeed(id, display)
                                             }
                                         }
                                     } else if(event === "destroyed") {
                                     } else if(event === "event") {
                                         if(msg["publishers"]) {
-                                            var list = msg["publishers"];
-                                            for(var f in list) {
+                                            let list = msg["publishers"];
+                                            for(let f in list) {
                                                 let id = list[f]["id"]
                                                 let display = list[f]["display"]
                                                 this.newRemoteFeed(id, display)
                                             }
                                         } else if(msg["leaving"]) {
                                             var leaving = msg["leaving"];
-                                            var remoteFeed = null;
                                             let numLeaving = parseInt(leaving)
                                             if(this.state.remoteList.hasOwnProperty(numLeaving)){
                                                 console.log("Removing someone")
