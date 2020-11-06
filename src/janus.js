@@ -452,7 +452,7 @@ function Janus(gatewayCallbacks) {
 	var wsKeepaliveTimeoutId = null;
 	var servers = null;
 	var serversIndex = 0;
-	var server = "https://janus.zims.live/";
+	var server = "https://janus.zims.live/janus";
 	if(Janus.isArray(server)) {
 		Janus.log("Multiple servers provided (" + server.length + "), will use the first that works");
 		server = null;

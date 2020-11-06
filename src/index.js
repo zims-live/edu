@@ -4,7 +4,7 @@ import './index.css';
 import { Icon, IconButton, Toolbar, AppBar } from '@material-ui/core';
 import Janus from './janus.js';
 
-let server = "https://janus.zims.live/"
+let server = "https://janus.zims.live/janus"
 //let myid = null
 let opaqueId = "videoroomtest-"+Janus.randomString(12);
 let janus;
