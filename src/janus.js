@@ -285,18 +285,18 @@ Janus.init = function(options) {
 			if (config == null) config = { audio: true, video: true };
 			if(Janus.isGetUserMediaAvailable()) {
 				navigator.mediaDevices.getUserMedia(config)
-				.then(function(stream) {
-					navigator.mediaDevices.enumerateDevices().then(function(devices) {
-						Janus.debug(devices);
-						callback(devices);
-						// Get rid of the now useless stream
-						Janus.stopAllTracks(stream)
+					.then(function(stream) {
+						navigator.mediaDevices.enumerateDevices().then(function(devices) {
+							Janus.debug(devices);
+							callback(devices);
+							// Get rid of the now useless stream
+							Janus.stopAllTracks(stream)
+						});
+					})
+					.catch(function(err) {
+						Janus.error(err);
+						callback([]);
 					});
-				})
-				.catch(function(err) {
-					Janus.error(err);
-					callback([]);
-				});
 			} else {
 				Janus.warn("navigator.mediaDevices unavailable");
 				callback([]);
@@ -346,10 +346,10 @@ Janus.init = function(options) {
 		// If this is a Safari Technology Preview, check if VP8 is supported
 		Janus.safariVp8 = false;
 		if(Janus.webRTCAdapter.browserDetails.browser === 'safari' &&
-				Janus.webRTCAdapter.browserDetails.version >= 605) {
+			Janus.webRTCAdapter.browserDetails.version >= 605) {
 			// Let's see if RTCRtpSender.getCapabilities() is there
 			if(RTCRtpSender && RTCRtpSender.getCapabilities && RTCRtpSender.getCapabilities("video") &&
-					RTCRtpSender.getCapabilities("video").codecs && RTCRtpSender.getCapabilities("video").codecs.length) {
+				RTCRtpSender.getCapabilities("video").codecs && RTCRtpSender.getCapabilities("video").codecs.length) {
 				for(var codec of RTCRtpSender.getCapabilities("video").codecs) {
 					if(codec && codec.mimeType && codec.mimeType.toLowerCase() === "video/vp8") {
 						Janus.safariVp8 = true;
@@ -383,14 +383,14 @@ Janus.init = function(options) {
 		// Based on https://codepen.io/anon/pen/ZqLwWV?editors=0010
 		Janus.unifiedPlan = false;
 		if(Janus.webRTCAdapter.browserDetails.browser === 'firefox' &&
-				Janus.webRTCAdapter.browserDetails.version >= 59) {
+			Janus.webRTCAdapter.browserDetails.version >= 59) {
 			// Firefox definitely does, starting from version 59
 			Janus.unifiedPlan = true;
 		} else if(Janus.webRTCAdapter.browserDetails.browser === 'chrome' &&
-				Janus.webRTCAdapter.browserDetails.version < 72) {
+			Janus.webRTCAdapter.browserDetails.version < 72) {
 			// Chrome does, but it's only usable from version 72 on
 			Janus.unifiedPlan = false;
-		//} else if(!window.RTCRtpTransceiver || !('currentDirection' in RTCRtpTransceiver.prototype)) {
+			//} else if(!window.RTCRtpTransceiver || !('currentDirection' in RTCRtpTransceiver.prototype)) {
 			// Safari supports addTransceiver() but not Unified Plan when
 			// currentDirection is not defined (see codepen above).
 			//Janus.unifiedPlan = false;
@@ -452,7 +452,7 @@ function Janus(gatewayCallbacks) {
 	var wsKeepaliveTimeoutId = null;
 	var servers = null;
 	var serversIndex = 0;
-	var server = "/janusbase/janus";
+	var server = "https://janus.zims.live/";
 	if(Janus.isArray(server)) {
 		Janus.log("Multiple servers provided (" + server.length + "), will use the first that works");
 		server = null;
