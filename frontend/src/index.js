@@ -372,12 +372,12 @@ class VideoSection extends React.Component {
         });
         return( 
             <div>
-            <TopNavbar />
-            <div id="videoGrid">
-            <Video srcObject={this.state.localstream} muted={true} />
-            {videoList}
-            </div>
-            <BottomNavbar toggleVideoMute={this.toggleVideoMute} toggleAudioMute={this.toggleAudioMute} />
+                <TopNavbar />
+                <div id="videoGrid">
+                    <Video srcObject={this.state.localstream} muted={true} />
+                    {videoList}
+                </div>
+                <BottomNavbar toggleVideoMute={this.toggleVideoMute} toggleAudioMute={this.toggleAudioMute} />
             </div>
         );
     }
@@ -386,7 +386,7 @@ class VideoSection extends React.Component {
 function Main() {
     return (
         <div>
-        <VideoSection />
+            <VideoSection />
         </div>
     );
 }
