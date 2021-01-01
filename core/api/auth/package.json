@@ -1,15 +1,15 @@
 {
-  "name": "backend",
+  "name": "auth",
   "version": "1.0.0",
-  "description": "",
+  "description": "Service that deals with student, teacher and admin authentication",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn ./src/api/classroom/index.ts",
-    "start": "node ./dist/api/classroom/index.js",
+    "dev": "ts-node-dev --respawn ./src/index.ts",
+    "start": "node ./dist/index.js",
     "build": "tsc -p ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Mohammad Yousuf Minhaj Zia",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"
