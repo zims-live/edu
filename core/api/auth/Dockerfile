@@ -1,14 +1,13 @@
 FROM node:10-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/auth
 
 COPY package*.json ./
 
-RUN npm i
+RUN npm install
 
-COPY ./tsconfig.json ./
 
-COPY ./src/ ./src/
+COPY . .
 
 RUN npm run build
 
