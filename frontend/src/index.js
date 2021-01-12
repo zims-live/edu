@@ -5,16 +5,12 @@ import { Icon, IconButton, Toolbar, AppBar } from '@material-ui/core';
 import Janus from './janus.js';
 
 let server = "https://janus.zims.live/janus"
-//let myid = null
 let opaqueId = "videoroomtest-"+Janus.randomString(12);
 let janus;
 let sfutest = null;
 let started = false;
 let myusername = Math.floor((Math.random() * 1000));
 let roomId = 1234;
-//let mystream = null;
-
-//let feeds = []
 
 var bitrateTimer = [];
 
@@ -39,56 +35,18 @@ function TopNavbar() {
     );
 }
 
-class BottomNavbar extends React.Component {
-    //constructor(props) {
-    //super(props);
-    //this.state = {
-    //isMute: false
-    //};
-    //}
-
-    //toggleMuteOn() {
-    //this.props.toggleAudioMute();
-    //}
-
-    //toggleMuteOff() {
-    //this.props.toggleAudioMute();
-    //}
-
-    //toggleVideoOn() {
-    //alert('video on');
-    //}
-
-    //toggleVideoOff() {
-    //alert('video off');
-    //}
-
-    //toggleScreenShareOn() {
-    //alert('screen sharing');
-    //}
-
-    //toggleScreenShareOff() {
-    //alert('screen sharing off');
-    //}
-
-    //createRoom() {
-    //alert('room has been created');
-    //}
-    //<IconButton color='inherit' onClick={this.createRoom}><Icon>create</Icon></IconButton>
-
-    render() {
-        return (
-            <div>
-                <AppBar position='static' id='bottom-app-bar'>
-                    <Toolbar>
-                        <ToggleButton toggleOn={this.props.toggleAudioMute} toggleOff={this.props.toggleAudioMute} color='inherit' toggledIcon='mic_off' regularIcon='mic' />
-                        <ToggleButton toggleOn={this.props.toggleVideoMute} toggleOff={this.props.toggleVideoMute} color='inherit' toggledIcon='videocam_off' regularIcon='videocam' />
-                        <ToggleButton toggleOn={this.toggleScreenShareOn} toggleOff={this.toggleScreenShareOff} color='inherit' toggledIcon='screen_share' regularIcon='stop_screen_share' />
-                    </Toolbar>
-                </AppBar>
-            </div>
-        );
-    };
+function BottomNavbar(props) {
+    return (
+        <div>
+            <AppBar position='static' id='bottom-app-bar'>
+                <Toolbar>
+                    <ToggleButton toggleOn={props.toggleAudioMute} toggleOff={props.toggleAudioMute} color='inherit' toggledIcon='mic_off' regularIcon='mic' />
+                    <ToggleButton toggleOn={props.toggleVideoMute} toggleOff={props.toggleVideoMute} color='inherit' toggledIcon='videocam_off' regularIcon='videocam' />
+                    <ToggleButton toggleOn={props.toggleScreenShareOn} toggleOff={props.toggleScreenShareOff} color='inherit' toggledIcon='screen_share' regularIcon='stop_screen_share' />
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
 }
 
 class ToggleButton extends React.Component {
@@ -348,7 +306,7 @@ class VideoSection extends React.Component {
     }
 
 
-    newRemoteFeed(id, display) {
+    newRemoteFeed(id, _) {
         let remoteFeed = null;
         janus.attach(
             {
@@ -414,12 +372,12 @@ class VideoSection extends React.Component {
         });
         return( 
             <div>
-                <TopNavbar />
-                <div id="videoGrid">
-                    <Video srcObject={this.state.localstream} muted={true} />
-                    {videoList}
-                </div>
-                <BottomNavbar toggleVideoMute={this.toggleVideoMute} toggleAudioMute={this.toggleAudioMute} />
+            <TopNavbar />
+            <div id="videoGrid">
+            <Video srcObject={this.state.localstream} muted={true} />
+            {videoList}
+            </div>
+            <BottomNavbar toggleVideoMute={this.toggleVideoMute} toggleAudioMute={this.toggleAudioMute} />
             </div>
         );
     }
@@ -428,7 +386,7 @@ class VideoSection extends React.Component {
 function Main() {
     return (
         <div>
-            <VideoSection />
+        <VideoSection />
         </div>
     );
 }
