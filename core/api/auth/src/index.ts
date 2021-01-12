@@ -9,6 +9,7 @@ const pool = new Pool(dbConfig);
 const app: Application = express();
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.get('/', (_req, res) => {
@@ -17,11 +18,9 @@ app.get('/', (_req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        console.log(req.body);
         const handle = req.body.handle;
         const password = req.body.password;
         let query: string = `SELECT * FROM users WHERE handle = '${handle}'`;
-        console.log(query);
         const results = await pool.query(query);
 
         if (results.rowCount != 0) {
@@ -39,8 +38,22 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/signup', (_req, res) => {
-    res.send("asdfasdf");
+app.post('/signup', async (req, res) => {
+    try {
+        const handle = req.body.handle;
+        const firstname = req.body.firstname;
+        const lastname = req.body.lastname;
+        const email = req.body.email;
+        const password = req.body.password;
+        let query: string = `INSERT INTO users(handle, firstname, lastname,
+                                               email, password) VALUES
+        ('${handle}', '${firstname}', '${lastname}', '${email}',
+         '${password}')`;
+        console.log(query);
+        res.status(200).send("User has been registered");
+    } catch (error) {
+        res.status(403).send("Something went wrong..");
+    }
 });
 
 const PORT: string = process.env.PORT || "5000";
