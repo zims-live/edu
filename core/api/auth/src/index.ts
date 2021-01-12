@@ -9,7 +9,7 @@ const pool = new Pool(dbConfig);
 const app: Application = express();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.get('/', (_req, res) => {
@@ -49,7 +49,7 @@ app.post('/signup', async (req, res) => {
                                                email, password) VALUES
         ('${handle}', '${firstname}', '${lastname}', '${email}',
          '${password}')`;
-        console.log(query);
+        await pool.query(query);
         res.status(200).send("User has been registered");
     } catch (error) {
         res.status(403).send("Something went wrong..");
