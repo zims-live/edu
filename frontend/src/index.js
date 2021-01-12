@@ -20,7 +20,7 @@ var bitrateTimer = [];
 
 Janus.init({debug: "all", callback: function() {
     if(started)
-        return;
+    return;
     started = true;
 }});
 
@@ -41,40 +41,40 @@ function TopNavbar() {
 
 class BottomNavbar extends React.Component {
     //constructor(props) {
-        //super(props);
-        //this.state = {
-            //isMute: false
-        //};
+    //super(props);
+    //this.state = {
+    //isMute: false
+    //};
     //}
 
     //toggleMuteOn() {
-        //this.props.toggleAudioMute();
+    //this.props.toggleAudioMute();
     //}
 
     //toggleMuteOff() {
-        //this.props.toggleAudioMute();
+    //this.props.toggleAudioMute();
     //}
 
     //toggleVideoOn() {
-        //alert('video on');
+    //alert('video on');
     //}
 
     //toggleVideoOff() {
-        //alert('video off');
+    //alert('video off');
     //}
 
     //toggleScreenShareOn() {
-        //alert('screen sharing');
+    //alert('screen sharing');
     //}
 
     //toggleScreenShareOff() {
-        //alert('screen sharing off');
+    //alert('screen sharing off');
     //}
 
     //createRoom() {
-        //alert('room has been created');
+    //alert('room has been created');
     //}
-                        //<IconButton color='inherit' onClick={this.createRoom}><Icon>create</Icon></IconButton>
+    //<IconButton color='inherit' onClick={this.createRoom}><Icon>create</Icon></IconButton>
 
     render() {
         return (
@@ -399,10 +399,10 @@ class VideoSection extends React.Component {
                 },
                 oncleanup: () => {
                     if(remoteFeed.spinner !== undefined && remoteFeed.spinner !== null)
-                        remoteFeed.spinner.stop();
+                    remoteFeed.spinner.stop();
                     remoteFeed.spinner = null;
                     if(bitrateTimer[remoteFeed.rfindex] !== null && bitrateTimer[remoteFeed.rfindex] !== null)
-                        clearInterval(bitrateTimer[remoteFeed.rfindex]);
+                    clearInterval(bitrateTimer[remoteFeed.rfindex]);
                     bitrateTimer[remoteFeed.rfindex] = null;
                 }
             });
