@@ -3,6 +3,7 @@ import cors from "cors";
 import { Pool } from "pg";
 import { dbConfig } from "./config";
 import bodyParser from "body-parser";
+import jwt from "jsonwebtoken";
 
 const pool = new Pool(dbConfig);
 
@@ -24,12 +25,19 @@ app.post("/login", async (req, res) => {
         const results = await pool.query(query, [handle, password]);
 
         if (results.rowCount != 0) {
-            const user = results.rows[0];
-            res.status(203).json(user);
+            const jwtToken = jwt.sign({
+                handle: handle,
+                password: password
+            }, process.env.JWT_SECRET, {
+                expiresIn: "1h"
+            });
+            res.status(203).json(jwtToken);
+
         } else {
             res.status(403).send("Wrong handle or password");
         }
     } catch (error) {
+        console.error(error);
         res.status(403).send("Something went wrong..");
     }
 });
@@ -42,10 +50,19 @@ app.post("/signup", async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         let query: string = `INSERT INTO users(handle, firstname, lastname,
-            email, password) VALUES ($1, $2, $3, $4, $5)`;
+                                               email, password) VALUES ($1, $2, $3, $4, $5)`;
         await pool.query(query, [handle, firstname, lastname, email, password]);
+
+        const jwtToken = jwt.sign({
+            handle: handle,
+            password: password
+        }, process.env.JWT_SECRET, {
+            expiresIn: "1h"
+        });
+        res.status(203).json(jwtToken);
         res.status(200).send("User has been registered");
     } catch (error) {
+        console.error(error);
         res.status(403).send("Something went wrong..");
     }
 });
