@@ -20,8 +20,9 @@ services:
             context: .
             target: builder
         container_name: auth-api-test
-        command: ./wait-for-it.sh userdb:5432 -- /bin/sh -c "npm run lint && npm run test"
+        command: ./wait-for-it.sh userdb:5432 -- /bin/sh -c "CI=true npm run lint && npm run test"
         depends_on:
             - userdb
+
         ports:
             - '5000:5000'
