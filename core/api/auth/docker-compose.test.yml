@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+    userdb:
+        image: postgres:13-alpine
+        env_file:
+            - .env.local
+        container_name: userdb-test
+        ports: 
+            - '5432:5432'
+        volumes:
+            - ./dbscripts/schema:/docker-entrypoint-initdb.d
+
+    sut:
+        image: yzia2000/zims-classroom:test
+        env_file:
+            - .env.local
+        build:
+            context: .
+            target: builder
+        container_name: auth-api-test
+        command: ./wait-for-it.sh userdb:5432 -- /bin/sh -c "npm run lint && npm run test"
+        depends_on:
+            - userdb
+        ports:
+            - '5000:5000'
