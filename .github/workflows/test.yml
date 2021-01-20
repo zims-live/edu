@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  lint_auth:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
             cd core/api/auth
             docker-compose -f docker-compose.test.yml run sut npm run lint
 
-  build:
+  test_auth:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
