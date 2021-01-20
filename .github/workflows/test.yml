@@ -16,7 +16,6 @@ jobs:
             cd core/api/auth
             docker-compose -f docker-compose.test.yml run sut npm run lint
 
-jobs:
   build:
     runs-on: ubuntu-latest
     steps:
