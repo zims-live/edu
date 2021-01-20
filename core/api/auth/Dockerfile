@@ -1,11 +1,13 @@
-FROM node:10-alpine AS base
+FROM node:10 AS base
 WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json .
 RUN npm install
 
 FROM base AS builder 
+COPY ./.eslint* ./
 COPY ./src src
+COPY ./wait-for-it.sh .
 RUN npm run build
 
 FROM node:10-alpine AS prod

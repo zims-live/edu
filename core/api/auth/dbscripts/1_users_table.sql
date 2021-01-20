@@ -1,1 +1,1 @@
-CREATE TABLE users(handle varchar(255) PRIMARY KEY, firstname text, lastname text, email text, password text);
+CREATE TABLE users(userid SERIAL PRIMARY KEY, handle varchar(255) UNIQUE, firstname text, lastname text, email text UNIQUE, password text);

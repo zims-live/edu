@@ -1,4 +1,4 @@
-# CS2102 Project
+# ZiMS: Online Education with WebRTC and Janus Gateway
 
 ## Core Dev Team
 - [Mohammad Yousuf Minhaj Zia](https://github.com/yzia2000)

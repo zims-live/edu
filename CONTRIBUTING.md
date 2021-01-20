@@ -27,15 +27,12 @@ git checkout -b feat/#824-important-feature
 3. Ensure that you are up to date with the main repo.
 ```
 git checkout main
-
 git fetch upstream
-
 git merge upstream/main
 ```
 
 If you are confident with rebasing:
 ```
-
 git rebase main
 ```
 
