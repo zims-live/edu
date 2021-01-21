@@ -9,6 +9,7 @@ services:
             - '5432:5432'
         volumes:
             - dbdata:/var/lib/postgresql/data/
+            - ./dbscripts:/docker-entrypoint-initdb.d
 
     auth:
         image: yzia2000/zims-classroom:dev

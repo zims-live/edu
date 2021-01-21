@@ -1,0 +1,13 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: db
+  config:
+    S3_BUCKET: db
+build:
+  docker:
+    auth: api/auth/Dockerfile
+run:
+  auth: npm run start
+  worker:
+    image: auth

@@ -13,6 +13,10 @@ app.use(helmet());
 
 app.use("/auth", auth);
 
+app.get("/", (_req, res) => {
+    res.send("Working");
+});
+
 const PORT: string = process.env.PORT || "5000";
 app.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`);
