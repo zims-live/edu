@@ -17,5 +17,4 @@ app.get('/', (_req, res) => {
   res.send('Welcome to ZiMS Classroom API');
 });
 
-const PORT: string = process.env.PORT ?? '5000';
-app.listen(PORT);
+export default app;

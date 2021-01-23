@@ -5,6 +5,7 @@ COPY tsconfig.json .
 RUN npm install
 
 FROM base AS builder 
+COPY ./jest.config.js .
 COPY ./.eslint* ./
 COPY ./src src
 COPY ./wait-for-it.sh .

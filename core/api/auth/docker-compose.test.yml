@@ -8,7 +8,7 @@ services:
         ports: 
             - '5432:5432'
         volumes:
-            - ./dbscripts/schema:/docker-entrypoint-initdb.d
+            - ./dbscripts:/docker-entrypoint-initdb.d
 
     sut:
         image: yzia2000/zims-classroom:test
