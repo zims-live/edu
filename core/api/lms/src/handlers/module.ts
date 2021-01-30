@@ -7,7 +7,7 @@ export const createModule = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, schoolid, grade = 0 } = req.body;
+    const { name, schoolid, grade = 1 } = req.body;
     const query =
       'INSERT INTO Modules(name, schoolid, grade) VALUES ($1, $2, $3)';
     await pool.query(query, [name, schoolid, grade]);
