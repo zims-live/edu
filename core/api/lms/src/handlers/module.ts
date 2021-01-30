@@ -25,7 +25,7 @@ export const listEnrolledModules = async (
     const { userId } = req.body;
     const query = 'SELECT DISTINCT name FROM Enrolls WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
-    if (results.rowCount != 0) {
+    if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
     } else {
       res.status(403).send('No modules enrolled');
@@ -43,7 +43,7 @@ export const listTeachModules = async (
     const { userId } = req.body;
     const query = 'SELECT DISTINCT name FROM Teaches WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
-    if (results.rowCount != 0) {
+    if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
     } else {
       res.status(403).send('No modules enrolled');

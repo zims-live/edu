@@ -24,7 +24,7 @@ export const listSchools = async (
   try {
     const query = 'SELECT * FROM Schools';
     const results: QueryResult = await pool.query(query);
-    if (results.rowCount != 0) {
+    if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
     } else {
       res.status(403).send('No schools found');
