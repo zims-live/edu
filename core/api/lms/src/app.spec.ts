@@ -1,16 +1,14 @@
 import request from 'supertest';
 import app from './app';
 
-describe('Auth route test', () => {
-  it('signup', (done) => {
+describe('LMS test', () => {
+  it('create school', (done) => {
     request(app)
-      .post('/auth/signup')
+      .post('/schools')
       .send({
-        handle: 'susan',
-        firstname: 'Susan',
-        lastname: 'Parker',
-        password: 'susan',
-        email: 'susan@test.com'
+        name: 'School2',
+        country: 'Country1',
+        city: 'City1',
       })
       .expect(200)
       .end((err) => {
@@ -19,57 +17,39 @@ describe('Auth route test', () => {
       });
   });
 
-  it('login', (done) => {
+  it('list schools', (done) => {
     request(app)
-      .post('/auth/login')
-      .send({
-        handle: 'susan',
-        password: 'susan'
-      })
-      .expect(203)
+      .get('/schools')
+      .expect(200)
       .end((err) => {
         if (err) return done(err);
         done(err);
       });
   });
 
-  it('login handle fail', (done) => {
+  it('create module without grade', (done) => {
     request(app)
-      .post('/auth/login')
+      .post('/modules')
       .send({
-        handle: 'Susan',
-        password: 'susan'
+        name: 'Module2',
+        schoolid: 2
       })
-      .expect(403)
+      .expect(200)
       .end((err) => {
         if (err) return done(err);
         done(err);
       });
   });
 
-  it('login password fail', (done) => {
+  it('create module with grade', (done) => {
     request(app)
-      .post('/auth/login')
+      .post('/modules')
       .send({
-        handle: 'susan',
-        password: 'Susan'
+        name: 'Module3',
+        schoolid: 2,
+        grade: 12
       })
-      .expect(403)
-      .end((err) => {
-        if (err) return done(err);
-        done(err);
-      });
-  });
-
-  it('login both fail', (done) => {
-    request(app)
-      .post('/auth/login')
-      .send({
-        handle: 'Susan',
-        password: 'Susan'
-      })
-      .expect(403)
-      .expect(403)
+      .expect(200)
       .end((err) => {
         if (err) return done(err);
         done(err);
