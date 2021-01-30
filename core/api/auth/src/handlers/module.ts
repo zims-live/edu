@@ -17,11 +17,13 @@ export const createModule = async (
   }
 };
 
-export const listEnrolledModules = async (req: Request, res: Response): Promise<void> => {
+export const listEnrolledModules = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { userId } = req.body;
-    const query =
-      'SELECT DISTINCT name FROM Enrolls WHERE userid = $1';
+    const query = 'SELECT DISTINCT name FROM Enrolls WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
     if (results.rowCount != 0) {
       res.status(200).json(results.rows);
@@ -33,11 +35,13 @@ export const listEnrolledModules = async (req: Request, res: Response): Promise<
   }
 };
 
-export const listTeachModules = async (req: Request, res: Response): Promise<void> => {
+export const listTeachModules = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { userId } = req.body;
-    const query =
-      'SELECT DISTINCT name FROM Teaches WHERE userid = $1';
+    const query = 'SELECT DISTINCT name FROM Teaches WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
     if (results.rowCount != 0) {
       res.status(200).json(results.rows);
@@ -49,11 +53,13 @@ export const listTeachModules = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const enrollModule = async (req: Request, res: Response): Promise<void> => {
+export const enrollModule = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { userId, moduleId } = req.body;
-    const query =
-      'INSERT INTO Enrolls(userid, moduleid) VALUES ($1, $2)';
+    const query = 'INSERT INTO Enrolls(userid, moduleid) VALUES ($1, $2)';
     await pool.query(query, [userId, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {
@@ -61,15 +67,16 @@ export const enrollModule = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const teachModule = async (req: Request, res: Response): Promise<void> => {
+export const teachModule = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { userId, moduleId } = req.body;
-    const query =
-      'INSERT INTO Teaches(userid, moduleid) VALUES ($1, $2)';
+    const query = 'INSERT INTO Teaches(userid, moduleid) VALUES ($1, $2)';
     await pool.query(query, [userId, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {
     res.status(403).send('Something went wrong..');
   }
 };
-
