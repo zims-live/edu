@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+    lmsdb:
+        image: postgres:13-alpine
+        environment:
+            - POSTGRES_PASSWORD
+            - POSTGRES_USER
+            - POSTGRES_DB
+        container_name: lmsdb
+        ports: 
+            - '5432:5432'
+        volumes:
+            - ./dbscripts/1_users_table.sql:/docker-entrypoint-initdb.d/1_users_table.sql
+
+    lms:
+        image: yzia2000/zims-lms:latest
+        environment:
+            - NODE_ENV=production
+            - POSTGRES_PASSWORD
+            - POSTGRES_USER
+            - POSTGRES_DB
+        build:
+            context: .
+        container_name: lms-api
+        depends_on:
+            - lmsdb
+        ports:
+            - '5000:5000'
