@@ -9,10 +9,10 @@ import {
 
 const modules: Router = express.Router();
 
-modules.post('/modules/create', createModule);
-modules.post('/modules/enroll', enrollModule);
-modules.post('/modules/teach', teachModule);
-modules.get('/modules/enroll', listEnrolledModules);
-modules.get('/modules/teach', listTeachModules);
+modules.post('/', createModule);
+modules.post('/enroll', enrollModule);
+modules.post('/teach', teachModule);
+modules.get('/enroll', listEnrolledModules);
+modules.get('/teach', listTeachModules);
 
 export default modules;

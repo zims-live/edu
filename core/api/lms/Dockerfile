@@ -1,4 +1,4 @@
-FROM node:10 AS base
+FROM node:15 AS base
 WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json .
@@ -11,7 +11,7 @@ COPY ./src src
 COPY ./wait-for-it.sh .
 RUN npm run build
 
-FROM node:10-alpine AS prod
+FROM node:15-alpine AS prod
 WORKDIR /app
 COPY --from=builder /app/dist dist
 COPY --from=builder /app/node_modules node_modules
