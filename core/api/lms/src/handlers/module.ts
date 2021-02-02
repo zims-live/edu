@@ -7,10 +7,10 @@ export const createModule = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, schoolid, grade = 1 } = req.body;
+    const { name, schoolid, startDate, endDate, grade = 1 } = req.body as { name: string, schoolid: number, startDate: Date, endDate: Date, grade: number };
     const query =
-      'INSERT INTO Modules(name, schoolid, grade) VALUES ($1, $2, $3)';
-    await pool.query(query, [name, schoolid, grade]);
+      'INSERT INTO Modules(name, schoolid, startDate, endDate, grade) VALUES ($1, $2, $3)';
+    await pool.query(query, [name, schoolid, startDate, endDate, grade]);
     res.status(200).send('Created module');
   } catch (error) {
     res.status(403).send('Something went wrong..');
