@@ -1,0 +1,49 @@
+version: "3.7"
+services:
+    db:
+        image: postgres:13-alpine
+        env_file:
+            - .env.local
+        container_name: db-dev
+        ports: 
+            - '5432:5432'
+        volumes:
+            - dbdata:/var/lib/postgresql/data/
+            - ./db/scripts:/docker-entrypoint-initdb.d
+
+    auth:
+        image: yzia2000/zims-auth:dev
+        env_file:
+            - .env.local
+        build:
+            context: ./auth
+            target: base
+        container_name: auth-api-dev
+        command: npm run dev
+        volumes:
+            - ./auth/src:/app/src
+            - ./auth/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5000:5000'
+
+    lms:
+        image: yzia2000/zims-lms:dev
+        env_file:
+            - .env.local
+        build:
+            context: ./lms
+            target: base
+        container_name: lms-api-dev
+        command: npm run dev
+        volumes:
+            - ./lms/src:/app/src
+            - ./lms/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5001:5000'
+
+volumes:
+    dbdata:

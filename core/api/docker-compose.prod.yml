@@ -1,20 +1,20 @@
 version: "3.7"
 services:
-    userdb:
+    db:
         image: postgres:13-alpine
         environment:
             - POSTGRES_PASSWORD
             - POSTGRES_USER
             - POSTGRES_DB
             - JWT_SECRET
-        container_name: userdb
+        container_name: db
         ports: 
             - '5432:5432'
         volumes:
-            - ./dbscripts/1_users_table.sql:/docker-entrypoint-initdb.d/1_users_table.sql
+            - ./dbscripts/*table.sql:/docker-entrypoint-initdb.d
 
     auth:
-        image: yzia2000/zims-classroom:latest
+        image: yzia2000/zims-auth:latest
         environment:
             - NODE_ENV=production
             - POSTGRES_PASSWORD
@@ -22,9 +22,24 @@ services:
             - POSTGRES_DB
             - JWT_SECRET
         build:
-            context: .
+            context: ./auth
         container_name: auth-api
         depends_on:
-            - userdb
+            - db
         ports:
             - '5000:5000'
+
+    lms:
+        image: yzia2000/zims-lms:latest
+        environment:
+            - NODE_ENV=production
+            - POSTGRES_PASSWORD
+            - POSTGRES_USER
+            - POSTGRES_DB
+        build:
+            context: ./lms
+        container_name: lms-api
+        depends_on:
+            - db
+        ports:
+            - '5001:5000'
