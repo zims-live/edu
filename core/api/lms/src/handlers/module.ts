@@ -9,7 +9,7 @@ export const createModule = async (
   try {
     const { name, schoolid, startDate, endDate, grade = 1 } = req.body as { name: string, schoolid: number, startDate: Date, endDate: Date, grade: number };
     const query =
-      'INSERT INTO Modules(name, schoolid, startDate, endDate, grade) VALUES ($1, $2, $3)';
+      'INSERT INTO LMS.Modules(name, schoolid, startDate, endDate, grade) VALUES ($1, $2, $3)';
     await pool.query(query, [name, schoolid, startDate, endDate, grade]);
     res.status(200).send('Created module');
   } catch (error) {
@@ -23,7 +23,7 @@ export const listEnrolledModules = async (
 ): Promise<void> => {
   try {
     const { userId } = req.body;
-    const query = 'SELECT DISTINCT name FROM Enrolls WHERE userid = $1';
+    const query = 'SELECT DISTINCT name FROM LMS.Enrolls WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
     if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
@@ -41,7 +41,7 @@ export const listTeachModules = async (
 ): Promise<void> => {
   try {
     const { userId } = req.body;
-    const query = 'SELECT DISTINCT name FROM Teaches WHERE userid = $1';
+    const query = 'SELECT DISTINCT name FROM LMS.Teaches WHERE userid = $1';
     const results: QueryResult = await pool.query(query, [userId]);
     if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
@@ -59,7 +59,7 @@ export const enrollModule = async (
 ): Promise<void> => {
   try {
     const { userId, moduleId } = req.body;
-    const query = 'INSERT INTO Enrolls(userid, moduleid) VALUES ($1, $2)';
+    const query = 'INSERT INTO LMS.Enrolls(userid, moduleid) VALUES ($1, $2)';
     await pool.query(query, [userId, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {
@@ -73,7 +73,7 @@ export const teachModule = async (
 ): Promise<void> => {
   try {
     const { userId, moduleId } = req.body;
-    const query = 'INSERT INTO Teaches(userid, moduleid) VALUES ($1, $2)';
+    const query = 'INSERT INTO LMS.Teaches(userid, moduleid) VALUES ($1, $2)';
     await pool.query(query, [userId, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {

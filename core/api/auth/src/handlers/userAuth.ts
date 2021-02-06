@@ -8,7 +8,7 @@ import User from '../types/User';
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { handle, password } = req.body;
-    const query = 'SELECT * FROM users WHERE handle = $1';
+    const query = 'SELECT * FROM Auth.Users WHERE handle = $1';
     const results: QueryResult = await pool.query(query, [handle]);
 
     if (results.rowCount !== 0) {
@@ -34,7 +34,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     const user = req.body;
     const hashedPassword: string = await hashPassword(user.password);
     const query =
-      'INSERT INTO users(handle, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)';
+      'INSERT INTO Auth.Users(handle, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)';
     await pool.query(query, [
       user.handle,
       user.firstname,

@@ -9,7 +9,7 @@ export const createSchool = async (
   try {
     const { name, country, city } = req.body;
     const query =
-      'INSERT INTO Schools(name, country, city) VALUES ($1, $2, $3)';
+      'INSERT INTO LMS.Schools(name, country, city) VALUES ($1, $2, $3)';
     await pool.query(query, [name, country, city]);
     res.status(200).send('Created school');
   } catch (error) {
@@ -22,7 +22,7 @@ export const listSchools = async (
   res: Response
 ): Promise<void> => {
   try {
-    const query = 'SELECT * FROM Schools';
+    const query = 'SELECT * FROM LMS.Schools';
     const results: QueryResult = await pool.query(query);
     if (results.rowCount !== 0) {
       res.status(200).json(results.rows);

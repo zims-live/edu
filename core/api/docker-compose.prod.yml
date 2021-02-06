@@ -11,7 +11,7 @@ services:
         ports: 
             - '5432:5432'
         volumes:
-            - ./dbscripts/*table.sql:/docker-entrypoint-initdb.d
+            - ./dbscripts/*schema.sql:/docker-entrypoint-initdb.d
 
     auth:
         image: yzia2000/zims-auth:latest
