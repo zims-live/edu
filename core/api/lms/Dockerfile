@@ -8,7 +8,7 @@ FROM base AS builder
 COPY ./jest.config.js .
 COPY ./.eslint* ./
 COPY ./src src
-COPY ./wait-for-it.sh .
+COPY ../wait-for-it.sh .
 RUN npm run build
 
 FROM node:15-alpine AS prod
