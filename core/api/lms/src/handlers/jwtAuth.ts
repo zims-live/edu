@@ -4,10 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 export default (req: Request, res: Response, next: NextFunction): void => {
   try {
     let idToken: string = '';
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer ')
-    ) {
+    if (req.headers.authorization?.startsWith('Bearer ') !== undefined) {
       idToken = req.headers.authorization.split('Bearer ')[1];
     } else {
       res.status(402).json({ error: 'Unauthorized' });
