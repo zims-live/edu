@@ -44,6 +44,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     ]);
     res.status(200).send('User has been registered');
   } catch (error) {
+    console.error(error);
     res.status(403).send('Something went wrong..');
   }
 };

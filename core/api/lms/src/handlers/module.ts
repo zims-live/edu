@@ -7,9 +7,9 @@ export const createModule = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, schoolid, startDate, endDate, grade = 1 } = req.body as { name: string, schoolid: number, startDate: Date, endDate: Date, grade: number };
+    const { name, schoolid, startDate, endDate, grade = 1 } = req.body;
     const query =
-      'INSERT INTO LMS.Modules(name, schoolid, startDate, endDate, grade) VALUES ($1, $2, $3)';
+      'INSERT INTO LMS.Modules(name, schoolid, startDate, endDate, grade) VALUES ($1, $2, $3, $4, $5)';
     await pool.query(query, [name, schoolid, startDate, endDate, grade]);
     res.status(200).send('Created module');
   } catch (error) {
@@ -22,13 +22,13 @@ export const listEnrolledModules = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userId } = req.body;
-    const query = 'SELECT DISTINCT name FROM LMS.Enrolls WHERE userid = $1';
-    const results: QueryResult = await pool.query(query, [userId]);
+    const { id } = req.body.user;
+    const query = 'SELECT DISTINCT M.* FROM LMS.Modules M NATURAL JOIN LMS.Enrolls E WHERE E.userid = $1';
+    const results: QueryResult = await pool.query(query, [id]);
     if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
     } else {
-      res.status(403).send('No modules enrolled');
+      res.status(200).send('No modules enrolled');
     }
   } catch (error) {
     res.status(403).send('Something went wrong..');
@@ -40,9 +40,9 @@ export const listTeachModules = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userId } = req.body;
-    const query = 'SELECT DISTINCT name FROM LMS.Teaches WHERE userid = $1';
-    const results: QueryResult = await pool.query(query, [userId]);
+    const { id } = req.body.user;
+    const query = 'SELECT DISTINCT M.* FROM LMS.Modules M NATURAL JOIN LMS.Teaches T WHERE T.userid = $1';
+    const results: QueryResult = await pool.query(query, [id]);
     if (results.rowCount !== 0) {
       res.status(200).json(results.rows);
     } else {
@@ -58,9 +58,10 @@ export const enrollModule = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userId, moduleId } = req.body;
+    const { id } = req.body.user;
+    const { moduleId } = req.body;
     const query = 'INSERT INTO LMS.Enrolls(userid, moduleid) VALUES ($1, $2)';
-    await pool.query(query, [userId, moduleId]);
+    await pool.query(query, [id, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {
     res.status(403).send('Something went wrong..');
@@ -72,9 +73,10 @@ export const teachModule = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userId, moduleId } = req.body;
+    const { id } = req.body.user;
+    const { moduleId } = req.body;
     const query = 'INSERT INTO LMS.Teaches(userid, moduleid) VALUES ($1, $2)';
-    await pool.query(query, [userId, moduleId]);
+    await pool.query(query, [id, moduleId]);
     res.status(200).send('Enrolled module');
   } catch (error) {
     res.status(403).send('Something went wrong..');

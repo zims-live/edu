@@ -32,7 +32,9 @@ describe('LMS test', () => {
       .post('/modules')
       .send({
         name: 'Module2',
-        schoolid: 2
+        schoolid: 2,
+        startDate: '2020-1-1',
+        endDate: '2020-2-1'
       })
       .expect(200)
       .end((err) => {
@@ -47,7 +49,9 @@ describe('LMS test', () => {
       .send({
         name: 'Module3',
         schoolid: 2,
-        grade: 12
+        grade: 12,
+        startDate: '2020-1-1',
+        endDate: '2020-2-1'
       })
       .expect(200)
       .end((err) => {

@@ -2,9 +2,11 @@ version: "3.7"
 services:
     db:
         image: postgres:13-alpine
-        env_file:
-            - .env.local
         container_name: db-dev
+        environment:
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_DB=${POSTGRES_DB}
         ports: 
             - '5432:5432'
         volumes:
@@ -13,8 +15,9 @@ services:
 
     auth:
         image: yzia2000/zims-auth:dev
-        env_file:
-            - .env.local
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
         build:
             context: ./auth
             target: base
@@ -30,8 +33,9 @@ services:
 
     lms:
         image: yzia2000/zims-lms:dev
-        env_file:
-            - .env.local
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
         build:
             context: ./lms
             target: base
