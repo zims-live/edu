@@ -20,10 +20,19 @@ CREATE TABLE LMS.Modules(id SERIAL PRIMARY KEY,
 );
 
 CREATE TABLE LMS.Enrolls(
-  id SERIAL PRIMARY KEY, 
+  id SERIAL RIMARY KEY, 
   userid int references Auth.Users(id) NOT NULL,
   moduleid int references LMS.Modules(id) NOT NULL,
+  classid int references LMS.Classes NOT NULL,
   unique(userid, moduleid)
+);
+
+CREATE TABLE LMS.Classes(
+  id int,
+  teachesid int references LMS.Teaches(id),
+  startTime time NOT NULL,
+  endTime time NOT NULL,
+  PRIMARY KEY(id, teachesid);
 );
 
 CREATE TABLE LMS.Teaches(
