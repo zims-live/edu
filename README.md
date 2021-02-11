@@ -1,4 +1,5 @@
 # ZiMS Edu
+[![Discord](https://img.shields.io/discord/808602335671484436?label=Discord&style=plastic)](https://discord.gg/YPJTARyHgD)
 
 ## Project Heirarchy
 ```
