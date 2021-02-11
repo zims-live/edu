@@ -1,4 +1,4 @@
-# ZiMS: Online Education with WebRTC and Janus Gateway
+# ZiMS Edu
 
 ## Project Heirarchy
 ```
