@@ -9,7 +9,8 @@ CREATE TABLE LMS.Schools(
   unique(name, country, city)
 );
 
-CREATE TABLE LMS.Modules(id SERIAL PRIMARY KEY, 
+CREATE TABLE LMS.Modules(
+  id SERIAL PRIMARY KEY, 
   name text not NULL,
   schoolid int references LMS.Schools(id) not NULl,
   grade int check(grade >= 0),
@@ -19,26 +20,25 @@ CREATE TABLE LMS.Modules(id SERIAL PRIMARY KEY,
   unique(name, schoolid)
 );
 
-CREATE TABLE LMS.Enrolls(
-  id SERIAL RIMARY KEY, 
-  userid int references Auth.Users(id) NOT NULL,
-  moduleid int references LMS.Modules(id) NOT NULL,
-  classid int references LMS.Classes NOT NULL,
-  unique(userid, moduleid)
-);
-
-CREATE TABLE LMS.Classes(
-  id int,
-  teachesid int references LMS.Teaches(id),
-  startTime time NOT NULL,
-  endTime time NOT NULL,
-  PRIMARY KEY(id, teachesid);
-);
-
 CREATE TABLE LMS.Teaches(
   id SERIAL PRIMARY KEY, 
   userid int references Auth.Users(id) NOT NULL,
   moduleid int references LMS.Modules(id) NOT NULL,
+  unique(userid, moduleid)
+);
+
+CREATE TABLE LMS.Classes(
+  id serial primary key,
+  teachesid int references LMS.Teaches(id),
+  startTime time NOT NULL,
+  endTime time NOT NULL
+);
+
+CREATE TABLE LMS.Enrolls(
+  id SERIAL PRIMARY KEY, 
+  userid int references Auth.Users(id) NOT NULL,
+  moduleid int references LMS.Modules(id) NOT NULL,
+  classid int references LMS.Classes(id) NOT NULL,
   unique(userid, moduleid)
 );
 commit;
