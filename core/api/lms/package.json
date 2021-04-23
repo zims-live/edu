@@ -8,7 +8,7 @@
     "start": "node ./dist/server.js",
     "build": "tsc -p .",
     "lint": "eslint src",
-    "test": "jest --passWithNoTests --detectOpenHandles"
+    "test": "jest --collectCoverage --passWithNoTests --detectOpenHandles"
   },
   "keywords": [],
   "author": "Mohammad Yousuf Minhaj Zia",
