@@ -49,5 +49,23 @@ services:
         ports:
             - '5001:5000'
 
+    schedule:
+        image: yzia2000/zims-schedule:dev
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
+        build:
+            context: ./schedule
+            target: base
+        container_name: schedule-api-dev
+        command: npm run dev
+        volumes:
+            - ./schedule/src:/app/src
+            - ./schedule/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5002:5000'
+
 volumes:
     dbdata:
