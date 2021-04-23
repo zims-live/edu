@@ -1,0 +1,71 @@
+version: "3.7"
+services:
+    db:
+        image: postgres:13-alpine
+        container_name: db-dev
+        environment:
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_DB=${POSTGRES_DB}
+        ports: 
+            - '5432:5432'
+        volumes:
+            - dbdata:/var/lib/postgresql/data/
+            - ./db/scripts:/docker-entrypoint-initdb.d
+
+    auth:
+        image: yzia2000/zims-auth:dev
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
+        build:
+            context: ./auth
+            target: base
+        container_name: auth-api-dev
+        command: npm run dev
+        volumes:
+            - ./auth/src:/app/src
+            - ./auth/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5000:5000'
+
+    lms:
+        image: yzia2000/zims-lms:dev
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
+        build:
+            context: ./lms
+            target: base
+        container_name: lms-api-dev
+        command: npm run dev
+        volumes:
+            - ./lms/src:/app/src
+            - ./lms/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5001:5000'
+
+    schedule:
+        image: yzia2000/zims-schedule:dev
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - JWT_SECRET=${JWT_SECRET}
+        build:
+            context: ./schedule
+            target: base
+        container_name: schedule-api-dev
+        command: npm run dev
+        volumes:
+            - ./schedule/src:/app/src
+            - ./schedule/package.json:/app/package.json
+        depends_on:
+            - db
+        ports:
+            - '5002:5000'
+
+volumes:
+    dbdata:

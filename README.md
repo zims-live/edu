@@ -1,8 +1,6 @@
-# ZiMS: Online Education with WebRTC and Janus Gateway
-
-## Core Dev Team
-- [Mohammad Yousuf Minhaj Zia](https://github.com/yzia2000)
-
+# ZiMS Edu
+[![Discord](https://img.shields.io/discord/808602335671484436?label=Discord&style=plastic)](https://discord.gg/YPJTARyHgD)
+[![GitHub CI](https://github.com/neovim/neovim/workflows/CI/badge.svg)](https://github.com/zims-live/zims-edu/actions?query=workflow%3A%22Schedule%22)
 ## Project Heirarchy
 ```
 |- root
